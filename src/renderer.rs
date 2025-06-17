@@ -33,11 +33,11 @@ impl eframe::App for GridApp {
             let num_rows = self.grid.len();
             let num_columns = self.grid[0].len();
 
-            // TODO: From this point on, I am sure things can be done much better, so improve the performance and make the tiles fit the screen properly later.
+            // TODO: From this point on, I am sure things can be done much better.
 
             // Let's calculate how big each cell should be, so that we fit everything on the screen.
-            let cell_width = (screen_rect.max.x / num_rows as f32).floor();
-            let cell_height = (screen_rect.max.y / num_columns as f32).floor();
+            let cell_width = screen_rect.max.x / num_columns as f32;
+            let cell_height = screen_rect.max.y / num_rows as f32;
 
             let mut shapes: Vec<Shape> = vec![];
 
