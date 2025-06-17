@@ -33,7 +33,7 @@ impl eframe::App for GridApp {
             let num_rows = self.grid.len();
             let num_columns = self.grid[0].len();
 
-            // TODO: From this point on, I am sure things can be done much better.
+            // TODO: From this point on, I am sure things can be done much better, for example we can make each cell exactly a square and improve performance.
 
             // Let's calculate how big each cell should be, so that we fit everything on the screen.
             let cell_width = screen_rect.max.x / num_columns as f32;
