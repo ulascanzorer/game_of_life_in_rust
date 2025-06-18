@@ -23,6 +23,8 @@ impl Default for GridApp {
 
 impl eframe::App for GridApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        // TODO: There is a bug in here, which makes the window have some thin grey lines, when for example the window is split in half.
+        // If the window is fullscreen, the lines go away.
         egui::CentralPanel::default().show(&ctx, |ui| {
             // screen_rect represents the entire area of the window.
             // The min and max of this structure have the units of logical pixels.
@@ -36,8 +38,14 @@ impl eframe::App for GridApp {
             // TODO: From this point on, I am sure things can be done much better, for example we can make each cell exactly a square and improve performance.
 
             // Let's calculate how big each cell should be, so that we fit everything on the screen.
-            let cell_width = screen_rect.max.x / num_columns as f32;
-            let cell_height = screen_rect.max.y / num_rows as f32;
+            // We use the shortest side of the screen as our basis for width and height, so we always display square cells.
+            let cell_width: f32;
+
+            if screen_rect.max.x <= screen_rect.max.y {
+                cell_width = screen_rect.max.x / num_columns as f32;
+            } else {
+                cell_width = screen_rect.max.y / num_rows as f32;
+            }
 
             let mut shapes: Vec<Shape> = vec![];
 
@@ -46,11 +54,11 @@ impl eframe::App for GridApp {
                     let current_rect = Rect {
                         min: Pos2 {
                             x: i as f32 * cell_width,
-                            y: j as f32 * cell_height,
+                            y: j as f32 * cell_width,
                         },
                         max: Pos2 {
                             x: (i as f32 * cell_width) + cell_width,
-                            y: (j as f32 * cell_height) + cell_height,
+                            y: (j as f32 * cell_width) + cell_width,
                         },
                     };
 
